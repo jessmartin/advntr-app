@@ -13,7 +13,7 @@ import './index.css'
 
 let ethereum
 
-  const ApolloInjector = ({ children }) => {
+const ApolloInjector = ({ children }) => {
   const { uri, headers } = useFetchConfig()
   try {
     const graphQLClient = new ApolloClient({
@@ -39,6 +39,7 @@ let ethereum
     ethereum = new EthereumAuthClient({
       makeRequest,
       debug: process.NODE_ENV === 'development',
+      infuraId: process.env.INFURA_ID,
     })
   } catch (e) {
     console.log(e)
@@ -50,13 +51,13 @@ const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
       <FetchConfigProvider>
-      <ApolloInjector>
-      <AuthProvider client={ethereum} type="ethereum">
-        <RedwoodApolloProvider>
-          <Routes />
-        </RedwoodApolloProvider>
-      </AuthProvider>
-      </ApolloInjector>
+        <ApolloInjector>
+          <AuthProvider client={ethereum} type="ethereum">
+            <RedwoodApolloProvider>
+              <Routes />
+            </RedwoodApolloProvider>
+          </AuthProvider>
+        </ApolloInjector>
       </FetchConfigProvider>
     </RedwoodProvider>
   </FatalErrorBoundary>
